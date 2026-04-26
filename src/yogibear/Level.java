@@ -56,17 +56,17 @@ public class Level {
                     switch (tile) {
                         case '#' -> {
                             // Akadály (fa)
-                            Image obstacleTreeImg = new ImageIcon("data/images/obstacleTree.png").getImage();
+                            Image obstacleTreeImg = ImageCache.getImage("data/images/obstacleTree.png");
                             obstacles.add(new Obstacle(posX, posY, TILE_SIZE, TILE_SIZE, obstacleTreeImg));
                         }
                         case '@' -> {
                             // Akadály (szikla)
-                            Image obstacleRockImg = new ImageIcon("data/images/obstacleRock.png").getImage();
+                            Image obstacleRockImg = ImageCache.getImage("data/images/obstacleRock.png");
                             obstacles.add(new Obstacle(posX, posY, TILE_SIZE, TILE_SIZE, obstacleRockImg));
                         }
                         case 'B' -> {
                             // Kosár
-                            Image basketImg = new ImageIcon("data/images/basket.png").getImage();
+                            Image basketImg = ImageCache.getImage("data/images/basket.png");
                             baskets.add(new Basket(posX, posY, TILE_SIZE, TILE_SIZE, basketImg));
                         }
                         case 'P' -> {
@@ -76,13 +76,13 @@ public class Level {
                         }
                         case 'H' -> {
                             // Vízszintes vadőr
-                            Image rangerImg = new ImageIcon("data/images/ranger.png").getImage();
+                            Image rangerImg = ImageCache.getImage("data/images/ranger.png");
                             rangers.add(new Ranger(posX, posY, TILE_SIZE, TILE_SIZE, rangerImg,
                                     Ranger.PatrolDirection.HORIZONTAL, 2, 80));
                         }
                         case 'V' -> {
                             // Függőleges vadőr
-                            Image vRangerImg = new ImageIcon("data/images/ranger.png").getImage();
+                            Image vRangerImg = ImageCache.getImage("data/images/ranger.png");
                             rangers.add(new Ranger(posX, posY, TILE_SIZE, TILE_SIZE, vRangerImg,
                                     Ranger.PatrolDirection.VERTICAL, 2, 80));
                         }
