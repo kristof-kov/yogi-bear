@@ -1,0 +1,23 @@
+# NetBeans
+build/
+dist/
+nbproject/private/
+
+# IntelliJ
+out/
+.idea/
+*.iml
+
+# Database (Apache Derby)
+*.lck
+*.log
+yogibearDB/log/
+
+# Java
+*.class
+hs_err_pid*
+replay_pid*
+
+# OS specific (Mac/Windows)
+.DS_Store
+Thumbs.db
