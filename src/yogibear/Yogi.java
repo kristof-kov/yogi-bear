@@ -81,6 +81,16 @@ public class Yogi extends Sprite {
         }
     }
     
+    @Override
+    public void update(boolean moving) {
+        if (!moving) {
+            currentFrame = 1;
+            frameCounter = 0;
+            return;
+        }
+        super.update(moving);
+    }
+    
     public boolean isMoving() {
         return movingUp || movingDown || movingLeft || movingRight;
     }

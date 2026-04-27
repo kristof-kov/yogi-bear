@@ -22,7 +22,7 @@ public class Sprite {
     protected int framesPerRow;
     protected int currentFrame = 0;
     protected int currentAnimationRow = 0;
-    private int frameCounter = 0;
+    protected int frameCounter = 0;
     private int frameDelay = 8; // minden 8 tickben vált frame-t
 
     public Sprite(int x, int y, int width, int height, Image image) {
