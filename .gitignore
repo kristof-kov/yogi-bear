@@ -11,7 +11,7 @@ out/
 # Database (Apache Derby)
 *.lck
 *.log
-yogibearDB/log/
+yogibearDB/
 
 # Java
 *.class
