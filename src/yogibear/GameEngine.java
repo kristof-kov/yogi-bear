@@ -56,6 +56,12 @@ public class GameEngine extends JPanel {
         gameTimer = new Timer(1000 / FPS, new GameLoopListener());
         gameTimer.start();
         
+        SoundManager.load("pickup", "data/sounds/pickup.wav");
+        SoundManager.load("caught", "data/sounds/caught.wav");
+        SoundManager.load("footstep", "data/sounds/footstep.wav");
+        SoundManager.load("success", "data/sounds/success.wav");
+        SoundManager.load("gameover", "data/sounds/gameover.wav");
+        SoundManager.load("gamewon", "data/sounds/gamewon.wav");
     }
     
     /**
@@ -207,6 +213,9 @@ public class GameEngine extends JPanel {
      */
     private void gameWon() {
         gameOver = true;
+        
+        SoundManager.play("gamewon");
+        
         String playerName = JOptionPane.showInputDialog(this, 
                 "Gratulálok! Befejezted a játékot!\n" +
                 "Összegyűjtött kosarak: " + yogi.getBasketsCollected() + "\n" +
@@ -224,6 +233,9 @@ public class GameEngine extends JPanel {
      */
     private void gameOverScreen() {
         gameOver = true;
+        
+        SoundManager.play("gameover");
+        
         String playerName = JOptionPane.showInputDialog(this, 
                 "Vége a játéknak!\n" +
                 "Összegyűjtött kosarak: " + yogi.getBasketsCollected() + "\n" +
@@ -363,6 +375,13 @@ public class GameEngine extends JPanel {
                 int oldY = yogi.getY();
                 yogi.move(getWidth(), getHeight());
                 yogi.update(yogi.isMoving());
+                if (yogi.isMoving()) {
+                    if (!SoundManager.isPlaying("footstep")) {
+                        new Thread(() -> SoundManager.loop("footstep")).start();
+                    }
+                } else {
+                    SoundManager.stop("footstep");
+                }
                 
                 // Ütközés akadályokkal
                 if (currentLevel.checkCollisionWithObstacles(yogi, yogi.getX(), yogi.getY())) {
@@ -374,6 +393,7 @@ public class GameEngine extends JPanel {
                 Basket collected = currentLevel.checkBasketCollection(yogi);
                 if (collected != null) {
                     yogi.collectBasket();
+                    SoundManager.play("pickup");
                 }
                 
                 // Vadőrök járőrözése és detektálás
@@ -385,6 +405,7 @@ public class GameEngine extends JPanel {
                         yogi.loseLife();
                         invincible = true;
                         invincibilityStart = System.currentTimeMillis();
+                        SoundManager.play("caught");
                         
                         if (!yogi.isAlive()) {
                             gameOverScreen();
@@ -394,6 +415,7 @@ public class GameEngine extends JPanel {
                 
                 // Pálya befejezése
                 if (currentLevel.isCompleted()) {
+                    SoundManager.play("success");
                     nextLevel();
                 }
             }
