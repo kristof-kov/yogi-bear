@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ScoreManager {
     
-    private static final String DB_URL = "jdbc:derby:yogibearDB;create=true";
+    private static final String DB_URL = "jdbc:derby:" + System.getProperty("user.dir") + "/yogibearDB;create=true";
     private Connection connection;
 
     public ScoreManager() {
