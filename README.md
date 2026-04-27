@@ -1,14 +1,20 @@
 # Maci Laci (Yogi Bear)
 
-Egyetemi beadandó projekt: 2D-s, rács alapú asztali játék Java Swing keretrendszerben.
+A 2D grid-based desktop game developed in Java. The player controls Yogi Bear navigating through Yellowstone National Park, collecting picnic baskets while avoiding patrolling rangers.
 
-## A játékról
-Maci Laci bőrébe bújva a Yellowstone Nemzeti Parkban kell összegyűjtenünk az összes piknik kosarat, miközben elkerüljük a járőröző vadőröket.
+![Gameplay Screenshot](docs/gameplay.jpg)
 
-## Futtatás és Telepítés
-A projekt NetBeans IDE-ben készült, de bármilyen Java környezetben futtatható.
+## Tech Stack
+- Language: Java 25
+- GUI Framework: Java Swing / AWT
+- Build Tool: Maven
+- Database: Apache Derby
 
-**Főosztály (Main):** `yogibear.Yogibear`
+## Controls
+- *W, A, S, D*: Move Yogi Bear
+- *ESC*: Pause / Resume game
 
-**Fontos más IDE-t használóknak:**
-A futtatáshoz a `lib` mappában található Apache Derby adatbázis-meghajtókat (`derby.jar`, `derbyshared.jar`, `derbytools.jar`) manuálisan hozzá kell adni a projekt Classpath / Dependencies listájához!
+## Key Features
+- *Custom Game Engine*: Built from scratch using `javax.swing.Timer` for a consistent 60 fps game loop.
+- *Persistent Leaderboard*: Embedded Apache Derby database that automatically initializes and stores high scores.
+- *Smart Resource Management*: Implementation of `ImageCache` and `SoundManager` to prevent memory leaks and redundant I/O operations.
