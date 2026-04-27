@@ -376,7 +376,9 @@ public class GameEngine extends JPanel {
                 yogi.move(getWidth(), getHeight());
                 yogi.update(yogi.isMoving());
                 if (yogi.isMoving()) {
-                    SoundManager.loop("footstep");
+                    if (!SoundManager.isPlaying("footstep")) {
+                        new Thread(() -> SoundManager.loop("footstep")).start();
+                    }
                 } else {
                     SoundManager.stop("footstep");
                 }

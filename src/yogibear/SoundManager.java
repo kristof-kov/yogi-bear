@@ -31,7 +31,7 @@ public class SoundManager {
     }
     
     /**
-     * Lejétsza a megadott nevű hangot.
+     * Lejátssza a megadott nevű hangot.
      * 
      * @param name a lejátszandó hang azonosítója
      */
@@ -66,5 +66,16 @@ public class SoundManager {
         if (clip != null && clip.isRunning()) {
             clip.stop();
         }
+    }
+    
+    /**
+     * True-t ad vissza, ha a megadott nevű hang éppen játszódik.
+     * 
+     * @param name a hang azonosítója
+     * @return true ha játszódik, egyébként false
+     */
+    public static boolean isPlaying(String name) {
+        Clip clip = sounds.get(name);
+        return clip != null && clip.isRunning();
     }
 }
