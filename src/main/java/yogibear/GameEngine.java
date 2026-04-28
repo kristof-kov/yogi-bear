@@ -217,10 +217,10 @@ public class GameEngine extends JPanel {
         SoundManager.play("gamewon");
         
         String playerName = JOptionPane.showInputDialog(this, 
-                "Gratulálok! Befejezted a játékot!\n" +
-                "Összegyűjtött kosarak: " + yogi.getBasketsCollected() + "\n" +
-                "Idő: " + formatTime(elapsedTime) + "\n\n" +
-                "Add meg a neved a ranglistához:");
+                "Congratulations! You finished the game!\n" +
+                "Baskets collected: " + yogi.getBasketsCollected() + "\n" +
+                "Time: " + formatTime(elapsedTime) + "\n\n" +
+                "Enter your name for the leaderboard:");
         
         if (playerName != null && !playerName.trim().isEmpty()) {
             scoreManager.addScore(playerName, yogi.getBasketsCollected(), elapsedTime);
@@ -237,10 +237,10 @@ public class GameEngine extends JPanel {
         SoundManager.play("gameover");
         
         String playerName = JOptionPane.showInputDialog(this, 
-                "Vége a játéknak!\n" +
-                "Összegyűjtött kosarak: " + yogi.getBasketsCollected() + "\n" +
-                "Idő: " + formatTime(elapsedTime) + "\n\n" +
-                "Add meg a neved a ranglistához:");
+                "Game Over!\n" +
+                "Baskets collected: " + yogi.getBasketsCollected() + "\n" +
+                "Time: " + formatTime(elapsedTime) + "\n\n" +
+                "Enter your name for the leaderboard:");
         
         if (playerName != null && !playerName.trim().isEmpty()) {
             scoreManager.addScore(playerName, yogi.getBasketsCollected(), elapsedTime);
@@ -286,7 +286,7 @@ public class GameEngine extends JPanel {
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("VÉGE", getWidth() / 2 - 80, getHeight() / 2);
+            g.drawString("GAME OVER", getWidth() / 2 - 80, getHeight() / 2);
         }
     }
     
@@ -315,16 +315,16 @@ public class GameEngine extends JPanel {
         int textX = x + 10;
         
         // Életek
-        g.drawString("Élet: " + yogi.getLives(), textX, y + 25);
+        g.drawString("Lives: " + yogi.getLives(), textX, y + 25);
         
         // Összesen gyűjtött
-        g.drawString("Kosár: " + yogi.getBasketsCollected(), textX, y + 50);
+        g.drawString("Baskets: " + yogi.getBasketsCollected(), textX, y + 50);
         
         // Pálya szám
-        g.drawString("Pálya: " + (currentLevel.getLevelNumber() + 1), textX, y + 75);
+        g.drawString("Level: " + (currentLevel.getLevelNumber() + 1), textX, y + 75);
         
         // Idő
-        g.drawString("Idő: " + formatTime(elapsedTime), textX, y + 100);
+        g.drawString("Time: " + formatTime(elapsedTime), textX, y + 100);
 
     }
     
