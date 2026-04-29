@@ -15,7 +15,7 @@
     <!-- include the fat JAR built by the Shade plugin -->
     <files>
         <file>
-            <source>target/yogi-bear-1.0-SNAPSHOT.jar</source>
+            <source>target/yogi-bear-1.0.0.jar</source>
             <destName>yogi-bear.jar</destName>
         </file>
     </files>
