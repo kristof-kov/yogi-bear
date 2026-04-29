@@ -60,7 +60,7 @@ public class YogiBearGUI {
         gameArea = new GameEngine();
         frame.add(gameArea, BorderLayout.CENTER);
         
-        frame.setPreferredSize(new Dimension(800, 600));
+        frame.setPreferredSize(new Dimension(800, 650));
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);

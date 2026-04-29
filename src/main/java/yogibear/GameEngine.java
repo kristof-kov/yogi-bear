@@ -46,6 +46,7 @@ public class GameEngine extends JPanel {
     private final Image heartIcon;
     private final Image basketIcon;
     private final Image clockIcon;
+    private final Image hudBackground;
 
     public GameEngine() {
         super();
@@ -71,6 +72,7 @@ public class GameEngine extends JPanel {
         heartIcon = ImageCache.getImage("data/images/heart.png");
         basketIcon = ImageCache.getImage("data/images/basket.png");
         clockIcon = ImageCache.getImage("data/images/clock.png");
+        hudBackground = ImageCache.getImage("data/images/hud_background.png");
         
         SoundManager.load("pickup", "data/sounds/pickup.wav");
         SoundManager.load("caught", "data/sounds/caught.wav");
@@ -321,46 +323,45 @@ public class GameEngine extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int iconSize = 20;
-        int margin = 12;
-        int padding = 10;
-        int rowHeight = 28;
-        int rows = 4;
-
-        int w = 120;
-        int h = padding * 2 + rows * rowHeight;
-        int x = getWidth() - w - margin;
-        int y = margin;
+        int barHeight = 50;
+        int y = getHeight() - barHeight;
 
         // background
-        g2.setColor(new Color(0, 0, 0, 160));
-        g2.fillRoundRect(x, y, w, h, 12, 12);
-    
-        g.setColor(Color.WHITE);
-        g.setFont(pixelFont);
-        
-        int textX = x + padding + iconSize + 8;
-        int iconX = x + padding;
-        
-        // lives
-        int row1Y = y + padding + iconSize;
-        g2.drawImage(heartIcon, iconX, row1Y - iconSize + 4, iconSize, iconSize, null);
-        g.drawString("x " + yogi.getLives(), textX, row1Y);
-        
-        // baskets
-        int row2Y = row1Y + rowHeight;
-        g2.drawImage(basketIcon, iconX, row2Y - iconSize + 4, iconSize, iconSize, null);
-        g.drawString("x " + yogi.getBasketsCollected(), textX, row2Y);
+        g2.drawImage(hudBackground, 0, y, getWidth(), barHeight, null);
 
-        // time
-        int row3Y = row2Y + rowHeight;
-        g2.drawImage(clockIcon, iconX, row3Y - iconSize + 4, iconSize, iconSize, null);
-        g2.drawString(formatTime(elapsedTime), textX, row3Y);
+        // line
+        g2.setColor(new Color(255, 255, 255, 60));
+        g2.drawLine(0, y, getWidth(), y);
+
+        int iconSize = 24;
+        int iconY = y + (barHeight - iconSize) / 2;
+        int textY = y + barHeight / 2 + 6;
+
+        g2.setFont(pixelFont);
+
+        // lives
+        int x1 = 20;
+        g2.drawImage(heartIcon, x1, iconY, iconSize, iconSize, null);
+        g2.setColor(Color.WHITE);
+        g2.drawString("x " + yogi.getLives(), x1 + iconSize + 6, textY);
+
+        // baskets
+        int x2 = 120;
+        g2.drawImage(basketIcon, x2, iconY, iconSize, iconSize, null);
+        g2.setColor(Color.WHITE);
+        g2.drawString("x " + yogi.getBasketsCollected(), x2 + iconSize + 6, textY);
 
         // level
-        int row4Y = row3Y + rowHeight;
-        g2.drawString("LEVEL  " + (currentLevel.getLevelNumber() + 1), iconX, row4Y);
+        String levelText = "LEVEL " + (currentLevel.getLevelNumber() + 1);
+        int levelTextWidth = g2.getFontMetrics().stringWidth(levelText);
+        g2.drawString(levelText, getWidth() / 2 - levelTextWidth / 2, textY);
 
+        // time
+        String timeText = formatTime(elapsedTime);
+        int timeTextWidth = g2.getFontMetrics().stringWidth(timeText);
+        int x4 = getWidth() - timeTextWidth - iconSize - 26;
+        g2.drawImage(clockIcon, x4, iconY, iconSize, iconSize, null);
+        g2.drawString(timeText, x4 + iconSize + 6, textY);
     }
     
     /**
