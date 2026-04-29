@@ -70,11 +70,8 @@ public class YogiBearGUI {
     }
     
     private void startNewGame() {
-        frame.remove(gameArea);
-        gameArea = new GameEngine();
-        frame.add(gameArea, BorderLayout.CENTER);
-        frame.revalidate();
-        frame.repaint();
+        gameArea.startNewGame();
+        gameArea.repaint();
         gameArea.requestFocusInWindow();
     }
     
