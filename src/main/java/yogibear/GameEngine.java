@@ -173,6 +173,11 @@ public class GameEngine extends JPanel {
         gameStartTime = System.currentTimeMillis();
         elapsedTime = 0;
         gameOver = false;
+
+        paused = false;
+        invincible = false;
+        yogi = null;
+
         loadLevel(0);
     }
     
