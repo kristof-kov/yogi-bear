@@ -335,7 +335,7 @@ public class GameEngine extends JPanel {
 
         int iconSize = 32;
         int iconY = y + (barHeight - iconSize) / 2;
-        int textY = y + barHeight / 2 + 6;
+        int textY = y + barHeight / 2 + 8;
 
         g2.setFont(pixelFont);
         g2.setColor(Color.WHITE);
