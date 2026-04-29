@@ -293,14 +293,21 @@ public class GameEngine extends JPanel {
         if (paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.WHITE);
+            g.setFont(pixelFont.deriveFont(20f));
+            String text = "PAUSED";
+            int textWidth = g.getFontMetrics().stringWidth(text);
+            g.drawString(text, getWidth() / 2 - textWidth / 2, getHeight() / 2);
         }
         
         if (gameOver) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("GAME OVER", getWidth() / 2 - 160, getHeight() / 2);
+            g.setFont(pixelFont.deriveFont(20f));
+            String text = "GAME OVER";
+            int textWidth = g.getFontMetrics().stringWidth(text);
+            g.drawString(text, getWidth() / 2 - textWidth / 2, getHeight() / 2);
         }
     }
     
