@@ -16,7 +16,7 @@ public class YogiBearGUI {
     private GameEngine gameArea;
 
     public YogiBearGUI() {
-        frame = new JFrame("Maci Laci - Yogi Bear");
+        frame = new JFrame("Yogi Bear");
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -27,13 +27,13 @@ public class YogiBearGUI {
         });
         frame.setLayout(new BorderLayout());
         
-        // Menüsáv
+        // menu bar
         JMenuBar menuBar = new JMenuBar();
         
-        JMenu gameMenu = new JMenu("Játék");
-        JMenuItem newGameItem = new JMenuItem("Új Játék");
-        JMenuItem leaderboardItem = new JMenuItem("Ranglista");
-        JMenuItem exitItem = new JMenuItem("Kilépés");
+        JMenu gameMenu = new JMenu("Game");
+        JMenuItem newGameItem = new JMenuItem("New Game");
+        JMenuItem leaderboardItem = new JMenuItem("Leaderboard");
+        JMenuItem exitItem = new JMenuItem("Exit");
         
         newGameItem.addActionListener(e -> startNewGame());
         leaderboardItem.addActionListener(e -> showLeaderboard());
@@ -44,8 +44,8 @@ public class YogiBearGUI {
         gameMenu.addSeparator();
         gameMenu.add(exitItem);
         
-        JMenu helpMenu = new JMenu("Súgó");
-        JMenuItem controlsItem = new JMenuItem("Irányítás");
+        JMenu helpMenu = new JMenu("Help");
+        JMenuItem controlsItem = new JMenuItem("Controls");
         
         controlsItem.addActionListener(e -> showControls());
         
@@ -56,7 +56,7 @@ public class YogiBearGUI {
         
         frame.setJMenuBar(menuBar);
         
-        // Játékterület
+        // game area
         gameArea = new GameEngine();
         frame.add(gameArea, BorderLayout.CENTER);
         
@@ -84,15 +84,15 @@ public class YogiBearGUI {
     
     private void showControls() {
         javax.swing.JOptionPane.showMessageDialog(frame,
-            "Irányítás:\n\n" +
-            "W - Fel\n" +
-            "S - Le\n" +
-            "A - Balra\n" +
-            "D - Jobbra\n" +
-            "ESC - Szünet\n\n" +
-            "Cél: Gyűjtsd össze az összes piknik kosarat,\n" +
-            "de kerüld el a vadőröket!",
-            "Irányítás",
+            "Controls:\n\n" +
+            "W - Up\n" +
+            "S - Down\n" +
+            "A - Left\n" +
+            "D - Right\n" +
+            "ESC - Pause\n\n" +
+            "Goal: Collect all the picnic baskets,\n" +
+            "but avoid the rangers!",
+            "Controls",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
 }

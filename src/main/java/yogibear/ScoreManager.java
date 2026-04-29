@@ -23,7 +23,7 @@ public class ScoreManager {
     }
     
     /**
-     * Inicializálja az adatbázis-kapcsolatot.
+     * Initializes the database connection.
      */
     private void initDatabase() {
         try {
@@ -45,24 +45,24 @@ public class ScoreManager {
                 Statement stmt = connection.createStatement();
                 stmt.execute(createTableSQL);
                 stmt.close();
-                System.out.println("Highscores tábla létrehozva.");
+                System.out.println("Highscores table created.");
             }
             tables.close();
             
         } catch (ClassNotFoundException e) {
-            System.err.println("Derby driver nem található: " + e.getMessage());
-            System.err.println("Győződj meg róla, hogy a derby.jar a classpath-ban van!");
+            System.err.println("Derby driver not found: " + e.getMessage());
+            System.err.println("Make sure derby.jar is on the classpath!");
         } catch (SQLException e) {
-            System.err.println("Adatbázis inicializálási hiba: " + e.getMessage());
+            System.err.println("Database initialisation error: " + e.getMessage());
         }
     }
     
     /**
-     * Új pontszámot ment el az adatbázisba
+     * Saves a new score to the database.
      * 
-     * @param playerName a játékos neve
-     * @param basketsCollected összegyűjtött kosarak száma
-     * @param timeElapsed a játék ideje ezredmásodpercben
+     * @param playerName the player's name
+     * @param basketsCollected number of baskets collected
+     * @param timeElapsed elapsed game time in milliseconds
      */
     public void addScore(String playerName, int basketsCollected, long timeElapsed) {
         String insertSQL = "INSERT INTO highscores (player_name, baskets_collected, time_elapsed) VALUES (?, ?, ?)";
@@ -74,21 +74,20 @@ public class ScoreManager {
             pstmt.setLong(3, timeElapsed);
             pstmt.executeUpdate();
             pstmt.close();
-            System.out.println("Pontszám mentve: " + playerName + " - " + basketsCollected + " kosár");
+            System.out.println("Score saved: " + playerName + " - " + basketsCollected + " baskets");
         } catch (SQLException e) {
-            System.err.println("Hiba a pontszám mentésekor: " + e.getMessage());
+            System.err.println("Error saving score: " + e.getMessage());
         }
     }
     
     /**
-     * Lekéri az adatbázis legjobb pontszámait.
+     * Retrieves the top scores from the database.
      * 
-     * Rendezés: 
-     * elsődlegesen a kosarak szerint,
-     * másodlagosan az idő szerint
+     * Sorted primarily by baskets collected (descending),
+     * secondarily by time elapsed (ascending).
      * 
-     * @param limit a visszaadott eredmények maximális száma
-     * @return a legjobb eredményeket tartalmazó listát
+     * @param limit maximum number of results to return
+     * @return list of top scores
      */
     public List<HighScore> getTopScores(int limit) {
         List<HighScore> scores = new ArrayList<>();
@@ -115,7 +114,7 @@ public class ScoreManager {
             rs.close();
             pstmt.close();
         } catch (SQLException e) {
-            System.err.println("Hiba a pontszámok lekérésekor: " + e.getMessage());
+            System.err.println("Error retrieving scores: " + e.getMessage());
         }
         
         return scores;
@@ -123,23 +122,22 @@ public class ScoreManager {
     
     
     /**
-     * Megjeleníti a ranglistát egy Swing párbeszédablakban.
+     * Displays the leaderboard in a Swing dialog.
      * 
-     * 
-     * @param parent a szülő komponens, melyhez az ablak tartozik
+     * @param parent the parent component to attach the dialog to
      */
     public void showLeaderboard(Component parent) {
         List<HighScore> topScores = getTopScores(10);
         
         if (topScores.isEmpty()) {
             JOptionPane.showMessageDialog(parent,
-                "Még nincs eredmény az adatbázisban.",
-                "Ranglista üres",
+                "No scores in the database yet.",
+                "Leaderboard Empty",
                 JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         
-        String[] columnNames = {"Helyezés", "Név", "Kosarak", "Idő", "Dátum"};
+        String[] columnNames = {"Rank", "Name", "Baskets", "Time", "Date"};
         Object[][] data = new Object[topScores.size()][5];
         
         for (int i = 0; i < topScores.size(); i++) {
@@ -170,15 +168,14 @@ public class ScoreManager {
         scrollPane.setPreferredSize(new java.awt.Dimension(550, 300));
         
         JOptionPane.showMessageDialog(parent, scrollPane, 
-                "Top 10 Eredmény", JOptionPane.PLAIN_MESSAGE);
+                "Top 10 Scores", JOptionPane.PLAIN_MESSAGE);
     }
     
     /**
-     * Az eltelt időt ezredmásodpercből perc:másodperc
-     * formátumú szöveggé alakítja.
+     * Converts elapsed time from milliseconds to a mm:ss formatted string.
      * 
-     * @param millis eltelt idő ezredmásodpercben
-     * @return az idő formázva (mm:ss)
+     * @param millis elapsed time in milliseconds
+     * @return formatted time (mm:ss)
      */
     private String formatTime(long millis) {
         long seconds = millis / 1000;
@@ -188,7 +185,7 @@ public class ScoreManager {
     }
     
     /**
-     * Lezárja az adatbázis-kapcsolatot.
+     * Closes the database connection.
      */
     public void close() {
         try {
@@ -196,7 +193,7 @@ public class ScoreManager {
                 connection.close();
             }
         } catch (SQLException e) {
-            System.err.println("Hiba az adatbázis lezárásakor: " + e.getMessage());
+            System.err.println("Error closing the database: " + e.getMessage());
         }
     }
 

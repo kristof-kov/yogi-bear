@@ -9,7 +9,7 @@ import java.awt.Rectangle;
  * @author kovi
  */
 public class Sprite {
-    // ezek a sprite bal felső koordinátái
+    // top-left coordinates of the sprite
     protected int x;
     protected int y;
     protected int width;
@@ -23,7 +23,7 @@ public class Sprite {
     protected int currentFrame = 0;
     protected int currentAnimationRow = 0;
     protected int frameCounter = 0;
-    private int frameDelay = 8; // minden 8 tickben vált frame-t
+    private int frameDelay = 8; // switches frame every 8 ticks
 
     public Sprite(int x, int y, int width, int height, Image image) {
         this.x = x;
@@ -43,8 +43,8 @@ public class Sprite {
         int srcY = currentAnimationRow * frameHeight;
         
         g.drawImage(image, 
-                x, y, x + width, y + height, // cél
-                srcX, srcY, srcX + frameWidth, srcY + frameHeight, // forrás
+                x, y, x + width, y + height, // dest
+                srcX, srcY, srcX + frameWidth, srcY + frameHeight, // source
                 null);            
     }
     
@@ -63,8 +63,9 @@ public class Sprite {
     } 
     
     /**
-     * Ellenőrzi, hogy a sprite ütközik-e egy másik sprite-al
-     * @param other a másik sprite
+     * Checks whether this sprite collides with another sprite.
+     *
+     * @param other the other sprite
      * @return 
      */
     public boolean collides(Sprite other) {
@@ -74,8 +75,9 @@ public class Sprite {
     }
     
     /**
-     * Két sprite között kiszámolja a távolságot
-     * @param other a másik sprite
+     * Calculates the distance between two sprites.
+     *
+     * @param other the other sprite
      * @return 
      */
     public double distanceTo(Sprite other) {

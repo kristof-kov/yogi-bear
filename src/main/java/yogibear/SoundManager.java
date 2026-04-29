@@ -14,10 +14,10 @@ public class SoundManager {
     private static final Map<String, Clip> sounds = new HashMap<>();
     
     /**
-     * Betölt egy hangfájlt a memóriába a megadott névvel.
+     * Loads a sound file into memory under the given name.
      * 
-     * @param name a hang azonosítója
-     * @param path a hangfájl elérési útja
+     * @param name identifier for the sound
+     * @param path file path of the sound
      */
     public static void load(String name, String path) {
         try {
@@ -31,9 +31,9 @@ public class SoundManager {
     }
     
     /**
-     * Lejátssza a megadott nevű hangot.
+     * Plays the sound with the given name.
      * 
-     * @param name a lejátszandó hang azonosítója
+     * @param name identifier of the sound to play
      */
     public static void play(String name) {
         Clip clip = sounds.get(name);
@@ -44,9 +44,9 @@ public class SoundManager {
     }
     
     /**
-     * Ismételve lejátssza a megadott nevű hangot.
+     * Plays the sound with the given name on a continuous loop.
      * 
-     * @param name a lejátszandó hang azonosítója
+     * @param name identifier of the sound to loop
      */
     public static void loop(String name) {
         Clip clip = sounds.get(name);
@@ -57,9 +57,9 @@ public class SoundManager {
     }
     
     /**
-     * Leállítja a megadott nevű hangot, ha éppen játszódik.
+     * Stops the sound with the given name if it is currently playing.
      * 
-     * @param name a megállítandó hang azonosítója
+     * @param name identifier of the sound to stop
      */
     public static void stop(String name) {
         Clip clip = sounds.get(name);
@@ -69,10 +69,10 @@ public class SoundManager {
     }
     
     /**
-     * True-t ad vissza, ha a megadott nevű hang éppen játszódik.
+     * Returns true if the sound with the given name is currently playing.
      * 
-     * @param name a hang azonosítója
-     * @return true ha játszódik, egyébként false
+     * @param name identifier of the sound
+     * @return true if playing, false otherwise
      */
     public static boolean isPlaying(String name) {
         Clip clip = sounds.get(name);

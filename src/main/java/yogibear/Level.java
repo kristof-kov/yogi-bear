@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
  */
 public class Level {
     
-    // egy mező legyen 40x40
+    // each tile 40x40
     private static final int TILE_SIZE = 40;
     
     private ArrayList<Obstacle> obstacles;
@@ -33,9 +33,9 @@ public class Level {
     }
     
     /**
-     * Kezeli egy pálya betöltését
+     * Handles loading a level from file.
      * 
-     * @param levelPath pálya elérési címe
+     * @param levelPath path to the level file
      * @throws IOException 
      */
     private void loadLevel(String levelPath) throws IOException {
@@ -55,33 +55,33 @@ public class Level {
                     
                     switch (tile) {
                         case '#' -> {
-                            // Akadály (fa)
+                            // obstacle (tree)
                             Image obstacleTreeImg = ImageCache.getImage("data/images/obstacleTree.png");
                             obstacles.add(new Obstacle(posX, posY, TILE_SIZE, TILE_SIZE, obstacleTreeImg));
                         }
                         case '@' -> {
-                            // Akadály (szikla)
+                            // obstacle (rock)
                             Image obstacleRockImg = ImageCache.getImage("data/images/obstacleRock.png");
                             obstacles.add(new Obstacle(posX, posY, TILE_SIZE, TILE_SIZE, obstacleRockImg));
                         }
                         case 'B' -> {
-                            // Kosár
+                            // basket
                             Image basketImg = ImageCache.getImage("data/images/basket.png");
                             baskets.add(new Basket(posX, posY, TILE_SIZE, TILE_SIZE, basketImg));
                         }
                         case 'P' -> {
-                            // Játékos start pozíció
+                            // player start position
                             yogiStartX = posX;
                             yogiStartY = posY;
                         }
                         case 'H' -> {
-                            // Vízszintes vadőr
+                            // horizontal ranger
                             Image hRangerImg = ImageCache.getImage("data/images/ranger_sheet.png");
                             rangers.add(new Ranger(posX, posY, TILE_SIZE, TILE_SIZE, hRangerImg,
                                     Ranger.PatrolDirection.HORIZONTAL, Ranger.DEFAULT_SPEED, Ranger.DEFAULT_DETECTION_RANGE));
                         }
                         case 'V' -> {
-                            // Függőleges vadőr
+                            // vertical ranger
                             Image vRangerImg = ImageCache.getImage("data/images/ranger_sheet.png");
                             rangers.add(new Ranger(posX, posY, TILE_SIZE, TILE_SIZE, vRangerImg,
                                     Ranger.PatrolDirection.VERTICAL, Ranger.DEFAULT_SPEED, Ranger.DEFAULT_DETECTION_RANGE));
@@ -94,13 +94,12 @@ public class Level {
     }
     
     /**
-     * Ellenőrzi, hogy a játékos ütközik-e
-     * az akadályokkal
+     * Checks whether the player collides with any obstacle.
      * 
-     * @param yogi
-     * @param newX ellenőrizendő mező X-koordinátája
-     * @param newY ellenőrizendő mező Y-koordinátája
-     * @return igaz, ha ütközik, egyébként false
+     * @param yogi Yogi Bear
+     * @param newX the X-coordinate of the tile to check
+     * @param newY the Y-coordinate of the tile to check
+     * @return true if there is a collision, false otherwise
      */
     public boolean checkCollisionWithObstacles(Yogi yogi, int newX, int newY) {
         int oldX = yogi.getX();
@@ -124,11 +123,11 @@ public class Level {
     }
     
     /**
-     * Ellenőrzi, hogy ütközünk-e a kosarakkal, és
-     * ha igen, akkor visszaadja azt
+     * Checks whether Yogi collides with any basket and,
+     * if so, returns that basket.
      * 
-     * @param yogi
-     * @return Ha felvettünk egy kosarat, akkor visszaadja azt, egyébként null
+     * @param yogi Yogi Bear
+     * @return the collected basket, or null if none was collected
      */
     public Basket checkBasketCollection(Yogi yogi) {
         for (Basket basket : baskets) {
@@ -142,10 +141,9 @@ public class Level {
     
     
     /**
-     * Ellenőrzi, hogy felvettük-e az
-     * összes kosarat
+     * Checks whether all baskets have been collected.
      * 
-     * @return true ha velvettük az összes kosarat, amúgy false
+     * @return true if all baskets have been collected, false otherwise
      */
     public boolean isCompleted() {
         for (Basket basket : baskets) {
@@ -157,9 +155,9 @@ public class Level {
     }
     
     /**
-     * Kirajzolja a különböző objektumokat
+     * Draws all level objects.
      * 
-     * @param g kirajzolandó grafika
+     * @param g the graphics context used for rendering
      */
     public void draw(Graphics g) {
         for (Obstacle obstacle : obstacles) {
@@ -176,9 +174,9 @@ public class Level {
     }
     
     /**
-     * A még fel nem vett kosarak számát adja vissza
+     * Returns the number of baskets not yet collected.
      * 
-     * @return még fel nem vett kosarak száma
+     * @return number of remaining baskets
      */
     public int getRemainingBaskets() {
         int count = 0;

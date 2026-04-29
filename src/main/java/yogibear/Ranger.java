@@ -18,8 +18,7 @@ public class Ranger extends Sprite {
     private final PatrolDirection direction;
     
     /**
-     * Enum a vízszintes és függőleges
-     * járőr-irányokhoz
+     * Enum for horizontal and vertical patrol directions.
      */
     public enum PatrolDirection {
         HORIZONTAL, VERTICAL
@@ -42,10 +41,9 @@ public class Ranger extends Sprite {
     }
     
     /**
-     * Beállítja a járőrözés irányát, valamint
-     * kezeli az akadályokat.
+     * Sets the patrol direction and handles obstacle collisions.
      * 
-     * @param obstacles akadályok listája
+     * @param obstacles list of obstacles
      */
     public void patrol(ArrayList<Obstacle> obstacles) {
         int nextX = x;
@@ -59,25 +57,24 @@ public class Ranger extends Sprite {
             currentAnimationRow = movingForward ? 0 : 3;
         }
         
-        // ha akadály, forduljon meg
+        // if obstacle ahead, turn around
         if (collidesWithObstacle(nextX, nextY, obstacles)) {
             movingForward = !movingForward;
             return;
         }
         
-        // különben mehet
+        // otherwise keep moving
         x = nextX;
         y = nextY;
     }
     
     /**
-     * Eldönti, hogy egy őr ütközik-e egy akadállyal
+     * Determines whether the ranger collides with an obstacle.
      * 
-     * @param testX az ellenőrizendő mező X-koordinátája
-     * @param testY az ellenőrizendő mező Y-koordinátája
-     * @param obstacles akadályok listája
-     * 
-     * @return ha ütközik true, egyébként false
+     * @param testX the X-coordinate of the tile to check
+     * @param testY the Y-coordinate of the tile to check
+     * @param obstacles list of obstacles
+     * @return true if there is a collision, false otherwise
      */
     private boolean collidesWithObstacle(int testX, int testY, ArrayList<Obstacle> obstacles) {
         if (obstacles == null) {
@@ -105,10 +102,10 @@ public class Ranger extends Sprite {
     }
     
     /**
-     * Eldönti, hogy az őr elég közel van-e Maci Lacihoz
+     * Determines whether the ranger is close enough to detect Yogi.
      * 
-     * @param yogi
-     * @return true, ha elég közel van Maci Laci, egyébként false
+     * @param yogi Yogi Bear
+     * @return true if Yogi is within detection range, false otherwise
      */
     public boolean detectsYogi(Yogi yogi) {
         double distance = this.distanceTo(yogi);

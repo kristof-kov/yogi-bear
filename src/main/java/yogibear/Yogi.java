@@ -41,11 +41,10 @@ public class Yogi extends Sprite {
     }
     
     /**
-     * A mozgást kezeli, valamint biztosítja, 
-     * hogy a pályán belül maradjunk.
+     * Handles movement and ensures Yogi stays within the level bounds.
      * 
-     * @param worldWidth a pálya szélessége
-     * @param worldHeight a pálya magassága
+     * @param worldWidth  the width of the level
+     * @param worldHeight  the height of the level
      */
     public void move(int worldWidth, int worldHeight) {
         int newX = x;
@@ -72,7 +71,7 @@ public class Yogi extends Sprite {
             currentAnimationRow = 2;
         }
         
-        // Határ ellenőrzés
+        // bounds check
         if (newX >= 0 && newX + width <= worldWidth) {
             x = newX;
         }
@@ -96,7 +95,7 @@ public class Yogi extends Sprite {
     }
     
     /**
-     * Visszaállítja a pozícióját a kezdő pozícióra.
+     * Resets Yogi's position to the starting position.
      */
     public void resetToStart() {
         x = startX;
@@ -104,8 +103,7 @@ public class Yogi extends Sprite {
     }
     
     /**
-     * Elvesz egy élet pontot, és 
-     * visszaállítja a pozícióját a kezdő pozícióra.
+     * Deducts one life and resets Yogi's position to the starting position.
      */
     public void loseLife() {
         lives--;
@@ -113,16 +111,16 @@ public class Yogi extends Sprite {
     }
     
     /**
-     * Kosarak számához hozzáad egyet.
+     * Increments the basket counter by one.
      */
     public void collectBasket() {
         basketsCollected++;
     }
    
     /**
-     * Ellenőrzi, hogy van-e elég élet pontja a játékosnak.
+     * Checks whether the player has any lives remaining.
      * 
-     * @return true, ha még van elég élet pontja, false ha nincs
+     * @return true if the player still has lives, false otherwise
      */
     public boolean isAlive() {
         return lives > 0;

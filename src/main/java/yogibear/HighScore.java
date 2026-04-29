@@ -33,10 +33,10 @@ public class HighScore {
     }
     
     /**
-     * Visszaadja az eredmény dátumát formázott szövegként,
-     * év-hónap-nap óra:perc formátumban.
+     * Returns the achievement date as a formatted string
+     * in YYYY-MM-DD HH:MM format.
      * 
-     * @return az elérés dátuma YYYY-MM-DD HH:MM formátumban
+     * @return the date achieved in YYYY-MM-DD HH:MM format
      */
     public String getFormattedDate() {
         return dateAchieved.toString().substring(0, 16);

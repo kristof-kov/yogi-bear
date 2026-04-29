@@ -32,7 +32,7 @@ public class GameEngine extends JPanel {
     private boolean paused = false;
     private boolean gameOver = false;
     
-    // Időmérő
+    // Timer
     private long gameStartTime;
     private long elapsedTime;
     
@@ -65,14 +65,13 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * Beállítja a billentyűzetes irányítást.
-     * WASD mozgás, ESC szünet.
+     * Sets up keyboard controls.
+     * WASD for movement, ESC for pause.
      * 
-     * Csak akkor indul mozgás, ha nincs megállítva
-     * vagy vége a játéknak.
+     * Movement only starts if game is not paused or over.
      */
     private void setupKeyBindings() {
-        // WASD mozgás
+        // WASD movement
         getInputMap().put(KeyStroke.getKeyStroke("W"), "move up");
         getActionMap().put("move up", new AbstractAction() {
             @Override
@@ -148,10 +147,9 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * Új játékot indít.
-     * 
-     * Nullázza az eltelt időt, visszaállítja a gameOver 
-     * állapotot és betölti az első pályát.
+     * Starts new game.
+     *
+     * Resets time, gameOver state and loads the first level.
      */
     public void startNewGame() {
         gameStartTime = System.currentTimeMillis();
@@ -161,9 +159,9 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * Betölti a megadott sorszámú pályát.
+     * Loads the specified level.
      * 
-     * @param levelNum betölteni kívánt pálya sorszáma
+     * @param levelNum the level number to load
      */
     private void loadLevel(int levelNum) {
         try {
@@ -171,11 +169,11 @@ public class GameEngine extends JPanel {
             Image yogiImage = ImageCache.getImage("data/images/yogi_sheet.png");
             
             if (yogi == null) {
-                // Első pálya
+                // first level
                 yogi = new Yogi(currentLevel.getYogiStartX(), currentLevel.getYogiStartY(), 
                                 YOGI_SIZE, YOGI_SIZE, yogiImage);
             } else {
-                // Többi pálya
+                // other levels
                 int currentLives = yogi.getLives();
                 int currentBaskets = yogi.getBasketsCollected();
                 
@@ -186,8 +184,8 @@ public class GameEngine extends JPanel {
                 yogi.setBasketsCollected(currentBaskets);
             }
         } catch (IOException ex) {
-            System.err.println("Hiba a pálya betöltésekor: " + ex.getMessage());
-            // Ha nincs több pálya, nyertünk
+            System.err.println("Error loading level:" + ex.getMessage());
+            // if there are no more levels, we won
             if (levelNum > 0) {
                 gameWon();
             }
@@ -195,8 +193,8 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * A következő pályára léptet. Ha elértük a maximális
-     * pályaszámot, akkor győzelemmel lezárja a játékot.
+     * Advances to the next level. If we reached the maximum
+     * number of levels, ends the game with a win.
      */
     private void nextLevel() {
         int nextLevelNum = currentLevel.getLevelNumber() + 1;
@@ -208,8 +206,8 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * Győzelmi állapotot állít be és bekéri a játékos nevét.
-     * Elmenti a pontszámot az adatbázisba.
+     * Sets the win state and asks for the player's name.
+     * Saves the score to the database.
      */
     private void gameWon() {
         gameOver = true;
@@ -217,10 +215,10 @@ public class GameEngine extends JPanel {
         SoundManager.play("gamewon");
         
         String playerName = JOptionPane.showInputDialog(this, 
-                "Gratulálok! Befejezted a játékot!\n" +
-                "Összegyűjtött kosarak: " + yogi.getBasketsCollected() + "\n" +
-                "Idő: " + formatTime(elapsedTime) + "\n\n" +
-                "Add meg a neved a ranglistához:");
+                "Congratulations! You finished the game!\n" +
+                "Baskets collected: " + yogi.getBasketsCollected() + "\n" +
+                "Time: " + formatTime(elapsedTime) + "\n\n" +
+                "Enter your name for the leaderboard:");
         
         if (playerName != null && !playerName.trim().isEmpty()) {
             scoreManager.addScore(playerName, yogi.getBasketsCollected(), elapsedTime);
@@ -228,8 +226,8 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * Játék vége állapotot állít be és bekéri a játékos nevét.
-     * Elmenti a pontszámot az adatbázisba.
+     * Sets the game over state and asks for the player's name.
+     * Saves the score to the database.
      */
     private void gameOverScreen() {
         gameOver = true;
@@ -237,10 +235,10 @@ public class GameEngine extends JPanel {
         SoundManager.play("gameover");
         
         String playerName = JOptionPane.showInputDialog(this, 
-                "Vége a játéknak!\n" +
-                "Összegyűjtött kosarak: " + yogi.getBasketsCollected() + "\n" +
-                "Idő: " + formatTime(elapsedTime) + "\n\n" +
-                "Add meg a neved a ranglistához:");
+                "Game Over!\n" +
+                "Baskets collected: " + yogi.getBasketsCollected() + "\n" +
+                "Time: " + formatTime(elapsedTime) + "\n\n" +
+                "Enter your name for the leaderboard:");
         
         if (playerName != null && !playerName.trim().isEmpty()) {
             scoreManager.addScore(playerName, yogi.getBasketsCollected(), elapsedTime);
@@ -248,26 +246,26 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * A panel kirajzolását végzi.
+     * Renders the panel.
+     *
+     * Draws the background, the level, Yogi Bear, and
+     * the overlay in case the game is paused or over.
      * 
-     * Kirajzolja a hátteret, a pályát, Maci Lacit, valamint
-     * megállítás vagy a játék vége esetén az overlayt
-     * 
-     * @param g a kirajzoláshoz használt grafikus kontextus
+     * @param g the graphics context used for drawing
      */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        // Háttér
+        // background
         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         
-        // Pálya elemek
+        // level elements
         if (currentLevel != null) {
             currentLevel.draw(g);
         }
         
-        // Maci Laci (villogás invincibility alatt)
+        // Yogi Bear (blinking during invincibility)
         if (yogi != null && (!invincible || (System.currentTimeMillis() / 200) % 2 == 0)) {
             yogi.draw(g);
         }
@@ -275,7 +273,7 @@ public class GameEngine extends JPanel {
         // HUD
         drawHUD(g);
         
-        // Paused vagy Game Over üzenet
+        // Paused or Game Over message
         if (paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -286,15 +284,15 @@ public class GameEngine extends JPanel {
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("VÉGE", getWidth() / 2 - 80, getHeight() / 2);
+            g.drawString("GAME OVER", getWidth() / 2 - 160, getHeight() / 2);
         }
     }
     
     /**
-     * Kirajzolja a HUD-ot (életek, kosarak, pálya száma, eltelt idő).
-     * Jobb felső sarokban, félig átlátszó háttérrel.
+     * Draws the HUD (lives, baskets, level number, elapsed time).
+     * In the top right corner, with a semi-transparent background.
      * 
-     * @param g a kirajzoláshoz használt grafikus kontextus
+     * @param g the graphics context used for drawing
      */
     private void drawHUD(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -314,26 +312,26 @@ public class GameEngine extends JPanel {
         
         int textX = x + 10;
         
-        // Életek
-        g.drawString("Élet: " + yogi.getLives(), textX, y + 25);
+        // lives
+        g.drawString("Lives: " + yogi.getLives(), textX, y + 25);
         
-        // Összesen gyűjtött
-        g.drawString("Kosár: " + yogi.getBasketsCollected(), textX, y + 50);
+        // total collected
+        g.drawString("Baskets: " + yogi.getBasketsCollected(), textX, y + 50);
         
-        // Pálya szám
-        g.drawString("Pálya: " + (currentLevel.getLevelNumber() + 1), textX, y + 75);
+        // level number
+        g.drawString("Level: " + (currentLevel.getLevelNumber() + 1), textX, y + 75);
         
-        // Idő
-        g.drawString("Idő: " + formatTime(elapsedTime), textX, y + 100);
+        // time
+        g.drawString("Time: " + formatTime(elapsedTime), textX, y + 100);
 
     }
     
     /**
-     * Az eltelt időt ezredmásodpercből perc:másodperc formátumú
-     * szöveggé alakítja.
+     * Converts elapsed time from milliseconds to a
+     * minutes:seconds formatted string.
      * 
-     * @param millis eltelt idő ezredmásodpercben
-     * @return formázott idő (mm:ss)
+     * @param millis elapsed time in milliseconds
+     * @return formatted time (mm:ss)
      */
     private String formatTime(long millis) {
         long seconds = millis / 1000;
@@ -345,32 +343,32 @@ public class GameEngine extends JPanel {
     
     class GameLoopListener implements ActionListener {
         /**
-         * A játékciklus időzített eseménykezelője.
+         * The timed event handler for the game loop.
          * 
-         * Minden tick esetén (ha nincs vége vagy megállítva a játék):
-         * frissíti az eltelt időt, 
-         * kezeli az invincibility-t,
-         * mozgatja Maci Lacit és kezeli az ütközéseket,
-         * kezeli a kosárgyűjtést,
-         * frissíti a vadőrök mozgását és a detektálást,
-         * ellenőrzi a pálya teljesítését.
+         * On every tick (if the game is not paused or over):
+         * updates elapsed time,
+         * handles invincibility,
+         * moves Yogi Bear and handles collisions,
+         * handles basket collection,
+         * updates rangers' patrol and detection,
+         * checks level completion.
          * 
-         * A tick végén újrarajzol.
+         * Redraws at the end of the tick.
          * 
-         * @param e az időzítő által küldött esemény
+         * @param e the event sent by the timer
          */
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!paused && !gameOver) {
-                // Időmérő frissítés
+                // update elapsed time
                 elapsedTime = System.currentTimeMillis() - gameStartTime;
                 
-                // Invincibility timer
+                // invincibility timer
                 if (invincible && System.currentTimeMillis() - invincibilityStart > INVINCIBILITY_DURATION) {
                     invincible = false;
                 }
                 
-                // Maci Laci mozgás
+                // Yogi Bear movement
                 int oldX = yogi.getX();
                 int oldY = yogi.getY();
                 yogi.move(getWidth(), getHeight());
@@ -383,20 +381,20 @@ public class GameEngine extends JPanel {
                     SoundManager.stop("footstep");
                 }
                 
-                // Ütközés akadályokkal
+                // collision with obstacles
                 if (currentLevel.checkCollisionWithObstacles(yogi, yogi.getX(), yogi.getY())) {
                     yogi.setX(oldX);
                     yogi.setY(oldY);
                 }
                 
-                // Kosár gyűjtés
+                // basket collection
                 Basket collected = currentLevel.checkBasketCollection(yogi);
                 if (collected != null) {
                     yogi.collectBasket();
                     SoundManager.play("pickup");
                 }
                 
-                // Vadőrök járőrözése és detektálás
+                // rangers patrol and detection
                 for (Ranger ranger : currentLevel.getRangers()) {
                     ranger.patrol(currentLevel.getObstacles());
                     ranger.update(true);
@@ -413,7 +411,7 @@ public class GameEngine extends JPanel {
                     }
                 }
                 
-                // Pálya befejezése
+                // level completion
                 if (currentLevel.isCompleted()) {
                     SoundManager.play("success");
                     nextLevel();
@@ -425,8 +423,8 @@ public class GameEngine extends JPanel {
     }
     
     /**
-     * Megjeleníti a ranglistát egy Swing párbeszédablakban.
-     * A ranglista adatait a ScoreManager szolgáltatja.
+     * Displays the leaderboard in a Swing dialog box.
+     * The leaderboard data is provided by the ScoreManager.
      */
     public void showLeaderboard() {
         scoreManager.showLeaderboard(this);
